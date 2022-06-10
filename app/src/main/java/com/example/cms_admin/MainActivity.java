@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -107,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     private void filter(String text) {
         ArrayList<Club_Details> filteredlist = new ArrayList<>();
         for (Club_Details item : clubArrayList) {
@@ -121,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
 
             adapter.filterList(filteredlist);
         }
+    }
+
+    public void signOut() {         //Sign out Admin
+        FirebaseAuth.getInstance().signOut();
     }
 
 }
