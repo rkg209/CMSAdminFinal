@@ -32,7 +32,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txt_club_name"
+            android:id="@+id/txt_club_Uname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -50,8 +50,7 @@
             android:layout_marginTop="10dp"
             android:text="Club Type"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 

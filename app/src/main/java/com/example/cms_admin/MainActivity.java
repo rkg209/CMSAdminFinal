@@ -1,6 +1,7 @@
 package com.example.cms_admin;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -18,6 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -34,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     public AppCompatButton btn_delete;
     public FloatingActionButton floatingActionButton;
 
+    public ArrayList<ClubDetail> list;
+    public  ClubDetailAdapter clubDetailAdapter;
+    public DatabaseReference reference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,15 +55,38 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         clubArrayList = new ArrayList<>();
+        list=new ArrayList<>();
+        reference= FirebaseDatabase.getInstance().getReference();
+        clubDetailAdapter = new ClubDetailAdapter(list, MainActivity.this);
 
-        clubArrayList.add(new Club_Details("SAIT","Student Association of Information Technology","21/6/2003","Departmental club",R.drawable.img));
-        clubArrayList.add(new Club_Details("WLUG","Walchand Linux Users Group","4/2/2004","General club",R.drawable.img));
-        clubArrayList.add(new Club_Details("ACSES","Association of Computer Science and Engineering Students","23/12/1989","Departmental Club",R.drawable.img));
-        clubArrayList.add(new Club_Details("PACE","Pace","12/12/22","General club",R.drawable.img));
-        clubArrayList.add(new Club_Details("ACM Student Chapter","ACM Student Chapter","19/10/2001","General club",R.drawable.img));
-        clubArrayList.add(new Club_Details("Roteract","Roteract","10/10/2000","General club",R.drawable.img));
+//        clubArrayList.add(new Club_Details("SAIT","Student Association of Information Technology","21/6/2003","Departmental club",R.drawable.img));
+//        clubArrayList.add(new Club_Details("WLUG","Walchand Linux Users Group","4/2/2004","General club",R.drawable.img));
+//        clubArrayList.add(new Club_Details("ACSES","Association of Computer Science and Engineering Students","23/12/1989","Departmental Club",R.drawable.img));
+//        clubArrayList.add(new Club_Details("PACE","Pace","12/12/22","General club",R.drawable.img));
+//        clubArrayList.add(new Club_Details("ACM Student Chapter","ACM Student Chapter","19/10/2001","General club",R.drawable.img));
+//        clubArrayList.add(new Club_Details("Roteract","Roteract","10/10/2000","General club",R.drawable.img));
 //        clubArrayList.add(new Club_Details("CLUB 1 ","Departmental club",R.drawable.img));
 //        clubArrayList.add(new Club_Details("CLUB 2","Departmental club",R.drawable.img));
+
+        reference.child("Club").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    ClubDetail clubDetail=dataSnapshot.child("Profile").getValue(ClubDetail.class);
+                    list.add(clubDetail);
+                }
+                clubDetailAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        recyclerView.setAdapter(clubDetailAdapter);
 
         adapter = new CustomAdapter(clubArrayList, cd -> {
             Toast.makeText(getApplicationContext(), cd.getName() +"Clicked",Toast.LENGTH_SHORT).show();
@@ -79,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
             });
             alertDialog.show();
         });
-        recyclerView.setAdapter(adapter);
+
+//        recyclerView.setAdapter(adapter);
 
         searchView = findViewById(R.id.ed_search);
 
@@ -110,9 +145,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void filter(String text) {
-        ArrayList<Club_Details> filteredlist = new ArrayList<>();
-        for (Club_Details item : clubArrayList) {
-            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+        ArrayList<ClubDetail> filteredlist = new ArrayList<>();
+        for (ClubDetail item : list) {
+            if (item.getUserName().toLowerCase().contains(text.toLowerCase())) {
                 filteredlist.add(item);
             }
         }
@@ -120,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No Data Found..", Toast.LENGTH_SHORT).show();
         } else {
 
-            adapter.filterList(filteredlist);
+            clubDetailAdapter.filterList(filteredlist);
         }
     }
 
