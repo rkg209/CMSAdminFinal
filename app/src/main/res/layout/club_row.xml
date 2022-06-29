@@ -9,7 +9,6 @@
     android:orientation="horizontal"
     android:background="@drawable/round_corner_row">
 
-
     <LinearLayout
         android:layout_width="120dp"
         android:layout_height="match_parent"
@@ -51,6 +50,14 @@
             android:text="Club Type"
             android:textColor="@color/black"
             android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:text="&#8942;"
+            android:textSize="20sp"
+            android:id="@+id/deleteClub"
+            android:layout_gravity="right" />
 
     </LinearLayout>
 

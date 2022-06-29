@@ -49,7 +49,7 @@ public class AdminLogin extends AppCompatActivity
             String uName = user_name.getText().toString();
             String pass = user_pass.getText().toString();
 
-            Toast.makeText(AdminLogin.this, "Clicked", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(AdminLogin.this, "Clicked", Toast.LENGTH_SHORT).show();
 
             if(uName.equals(AdminEmail)){
                 signIn(uName,pass);

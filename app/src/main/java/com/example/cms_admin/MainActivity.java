@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         clubArrayList = new ArrayList<>();
         list=new ArrayList<>();
         reference= FirebaseDatabase.getInstance().getReference();
+        reference.keepSynced(true);
         clubDetailAdapter = new ClubDetailAdapter(list, MainActivity.this);
 
 //        clubArrayList.add(new Club_Details("SAIT","Student Association of Information Technology","21/6/2003","Departmental club",R.drawable.img));
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(clubDetailAdapter);
 
-        adapter = new CustomAdapter(clubArrayList, cd -> {
+/*        adapter = new CustomAdapter(clubArrayList, cd -> {
             Toast.makeText(getApplicationContext(), cd.getName() +"Clicked",Toast.LENGTH_SHORT).show();
             final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
             View view2 = getLayoutInflater().inflate(R.layout.club_account,null);
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             });
             alertDialog.show();
         });
-
+*/
 //        recyclerView.setAdapter(adapter);
 
         searchView = findViewById(R.id.ed_search);
@@ -136,8 +137,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         floatingActionButton.setOnClickListener(view -> {
-
-            Toast.makeText(getApplicationContext(),"FAB Clicked",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"FAB Clicked",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this,CreateClub.class);
             startActivity(intent);
 
@@ -160,7 +160,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signOut() {         //Sign out Admin
+        Toast.makeText(this, "Signing Out", Toast.LENGTH_SHORT).show();
         FirebaseAuth.getInstance().signOut();
-    }
+        startActivity(new Intent(this, AdminLogin.class));
+    }      //onclick logout
 
 }
