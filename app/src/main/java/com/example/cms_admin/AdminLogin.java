@@ -4,12 +4,14 @@ import android.app.admin.SystemUpdateInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +32,7 @@ public class AdminLogin extends AppCompatActivity
     private FirebaseAuth auth;
     private DatabaseReference myRef;
     private static String AdminEmail;
+    AppCompatButton btn_forget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class AdminLogin extends AppCompatActivity
         user_name = findViewById(R.id.ed_username);
         user_pass = findViewById(R.id.ed_pass);
         btn_login = findViewById(R.id.btn_login);
+        btn_forget =findViewById(R.id.ForgetPass);
 
         auth = FirebaseAuth.getInstance();
         myRef = FirebaseDatabase.getInstance().getReference("AdminEmail");
@@ -55,6 +59,27 @@ public class AdminLogin extends AppCompatActivity
                 signIn(uName,pass);
             }else {
                 Toast.makeText(AdminLogin.this, "Only Admin can Login", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btn_forget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Email = user_name.getText().toString();
+                if (Email.equals("")){
+                    Toast.makeText(AdminLogin.this, "Enter Your in Username Field Email", Toast.LENGTH_SHORT).show();
+                }else {
+                    auth.sendPasswordResetEmail(Email)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(AdminLogin.this, "Password Reset Email Sent", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{Toast.makeText(AdminLogin.this, "Email is not Authenticated", Toast.LENGTH_SHORT).show();}
+                                }
+                            });
+                }
             }
         });
     }

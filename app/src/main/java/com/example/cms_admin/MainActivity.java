@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public TextView txt_club_creation_date;
     public AppCompatButton btn_delete;
     public FloatingActionButton floatingActionButton;
+    public FloatingActionButton floatingActionButtonlogout;
 
     public ArrayList<ClubDetail> list;
     public  ClubDetailAdapter clubDetailAdapter;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         floatingActionButton = findViewById(R.id.fab);
+        floatingActionButtonlogout = findViewById(R.id.btn_logout);
 
         recyclerView = findViewById(R.id.rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -141,6 +143,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this,CreateClub.class);
             startActivity(intent);
 
+        });
+
+        floatingActionButtonlogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signOut();
+            }
         });
     }
 

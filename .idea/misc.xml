@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/CMS-ADMIN/app/src/main/res/drawable/custom_textview_textcolor.xml" value="0.2385" />
         <entry key="..\:/CMS-ADMIN/app/src/main/res/layout/activity_main.xml" value="0.23229166666666667" />
         <entry key="..\:/CMS-ADMIN/app/src/main/res/layout/admin_login.xml" value="0.23229166666666667" />
         <entry key="..\:/CMS-ADMIN/app/src/main/res/layout/club_account.xml" value="0.23229166666666667" />
